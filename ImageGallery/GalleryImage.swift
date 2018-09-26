@@ -11,8 +11,11 @@ import Foundation
 struct GalleryImage {
     
     var url : URL
+    var aspectRation : Double = 0.0
     
     init(url : URL){
         self.url = url
     }
+    
+    
 }

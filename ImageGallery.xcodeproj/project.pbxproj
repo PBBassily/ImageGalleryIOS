@@ -13,6 +13,8 @@
 		38184743215B8DA700ECA400 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38184741215B8DA700ECA400 /* LaunchScreen.storyboard */; };
 		3818474C215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818474B215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift */; };
 		3818474E215B97FC00ECA400 /* GalleryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818474D215B97FC00ECA400 /* GalleryImage.swift */; };
+		38184750215BA64100ECA400 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818474F215BA64100ECA400 /* ImageCollectionViewCell.swift */; };
+		38184752215BABBA00ECA400 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38184751215BABBA00ECA400 /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		38184744215B8DA700ECA400 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3818474B215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryCollectionViewController.swift; sourceTree = "<group>"; };
 		3818474D215B97FC00ECA400 /* GalleryImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryImage.swift; sourceTree = "<group>"; };
+		3818474F215BA64100ECA400 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		38184751215BABBA00ECA400 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 				38184744215B8DA700ECA400 /* Info.plist */,
 				3818474B215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift */,
 				3818474D215B97FC00ECA400 /* GalleryImage.swift */,
+				3818474F215BA64100ECA400 /* ImageCollectionViewCell.swift */,
+				38184751215BABBA00ECA400 /* Utilities.swift */,
 			);
 			path = ImageGallery;
 			sourceTree = "<group>";
@@ -148,6 +154,8 @@
 			files = (
 				38184739215B8DA500ECA400 /* AppDelegate.swift in Sources */,
 				3818474C215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift in Sources */,
+				38184750215BA64100ECA400 /* ImageCollectionViewCell.swift in Sources */,
+				38184752215BABBA00ECA400 /* Utilities.swift in Sources */,
 				3818474E215B97FC00ECA400 /* GalleryImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

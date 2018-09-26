@@ -8,27 +8,73 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate {
     
+   
     
+    var images = [GalleryImage]()
     
     override func viewDidLoad() {
         collectionView?.dataSource = self
+        collectionView?.delegate = self
+       // collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
     }
     
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
         return session.canLoadObjects(ofClass: NSURL.self) && session.canLoadObjects(ofClass: UIImage.self)
     }
+    
+    
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         return UICollectionViewDropProposal.init(operation: .copy)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        return
+        
+        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0 )
+        
+        for item in coordinator.items {
+            
+            if let sourcePath = item.sourceIndexPath {
+                // local drop
+                print("local drop")
+                if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
+                    collectionView.performBatchUpdates({
+
+                    })
+                    coordinator.drop(item.dragItem, toItemAt: destinationPath)
+                    
+                }
+                
+            }else  {
+                
+                print("outsource")
+                let placeholderContext = coordinator.drop(item.dragItem, to: UICollectionViewDropPlaceholder(insertionIndexPath: destinationPath, reuseIdentifier: "PlaceHolderCell"))
+                
+                item.dragItem.itemProvider.loadObject(ofClass: NSURL.self, completionHandler: { (provider, error) in
+                    DispatchQueue.main.async {
+                        
+                        if let url = provider as? URL {
+                            print("i can")
+                            placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
+                                self.images.insert(GalleryImage(url: url.imageURL), at: insertionPath.item )
+                            })
+                        }
+                        else  {
+                            print("i cannt")
+                            placeholderContext.deletePlaceholder()
+                        }
+                    }
+                    
+                }
+                )
+                
+            }
+            
+        }
+        
     }
     
 
@@ -52,13 +98,15 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 1
+        return images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlaceHolderCell", for: indexPath)
-    
-        // Configure the cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
+        
+        if let imageCell = cell as? ImageCollectionViewCell {
+            imageCell.fetch(contentOf: images[indexPath.row].url)
+        }
     
         return cell
     }
