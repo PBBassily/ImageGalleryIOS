@@ -16,7 +16,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
 
     weak var delegate : ImageCollectionViewCellDelegate?
     
-    
+    var imageUrl : URL?
     
     
     @IBOutlet weak var imageView: UIImageView! {
@@ -38,6 +38,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
                     
                     if let imageData  = urlContents{
                         print("i got \(imageURL)")
+                        self?.imageUrl = imageURL
                         self?.imageView.image = UIImage(data: imageData)
                         self?.delegate?.didLoadImage()
                 }

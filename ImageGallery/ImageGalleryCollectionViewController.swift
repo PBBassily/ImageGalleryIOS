@@ -8,7 +8,10 @@
 
 import UIKit
 
-class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout {
+class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, UICollectionViewDragDelegate,ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout {
+    
+    
+    
     
     
     
@@ -19,29 +22,36 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     override func viewDidLoad() {
         collectionView?.dataSource = self
         collectionView?.delegate = self
-        // collectionView?.dragDelegate = self
+        collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
+        
+        
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(scaler(_:)))
         view.addGestureRecognizer(pinch)
         
         
     }
-  @objc  func scaler(_ gestureRecognizer : UIPinchGestureRecognizer) {
+    @objc  func scaler(_ gestureRecognizer : UIPinchGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
             Constants.FIXED_CELL_WIDTH = Constants.FIXED_CELL_WIDTH*gestureRecognizer.scale
             gestureRecognizer.scale = 1.0
         }
-    
-    flowLayout?.invalidateLayout()
+        
+        flowLayout?.invalidateLayout()
     }
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
-        return session.canLoadObjects(ofClass: NSURL.self) && session.canLoadObjects(ofClass: UIImage.self)
+        return session.canLoadObjects(ofClass: NSURL.self)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        return UICollectionViewDropProposal.init(operation: .copy)
+        
+        let isInCollectionViewContext = (session.localDragSession?.localContext as? UICollectionView) == collectionView
+        
+        
+        return UICollectionViewDropProposal(operation: isInCollectionViewContext ? .move : .copy, intent: .insertAtDestinationIndexPath)
+        
     }
     
     
@@ -54,9 +64,12 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
             if let sourcePath = item.sourceIndexPath {
                 // local drop
                 print("local drop")
-                if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
+                if let url = (item.dragItem.localObject as? URL) {
                     collectionView.performBatchUpdates({
-                        
+                        images.remove(at: sourcePath.item)
+                        images.insert(GalleryImage(url: url), at: destinationPath.item)
+                        collectionView.deleteItems(at: [sourcePath])
+                        collectionView.insertItems(at: [destinationPath])
                     })
                     coordinator.drop(item.dragItem, toItemAt: destinationPath)
                     
@@ -132,7 +145,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     }
     
     func didLoadImage() {
-    
+        
         
         flowLayout?.invalidateLayout()
         
@@ -149,12 +162,31 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
             
             let aspectRatio = image.size.width / image.size.height
             let newHeight = CGFloat(Constants.FIXED_CELL_WIDTH) / aspectRatio
-        
+            
             return CGSize(width: Constants.FIXED_CELL_WIDTH, height: newHeight)
-    } else {
-    return CGSize(width: Constants.FIXED_CELL_WIDTH , height: Constants.FIXED_CELL_HEIGHT)
+        } else {
+            return CGSize(width: Constants.FIXED_CELL_WIDTH , height: Constants.FIXED_CELL_HEIGHT)
+        }
     }
     
-}
-
+    func dragItems(at indexPath :IndexPath ) -> [UIDragItem]{
+        if let url  = (collectionView?.cellForItem(at: indexPath) as? ImageCollectionViewCell)?.imageUrl  as NSURL? {
+            let dragItem = UIDragItem(itemProvider: NSItemProvider(object: url))
+            dragItem.localObject = url // no need for sessions lifeCycle because we are in the same app
+            return [dragItem]
+        }
+        return []
+        
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        session.localContext = collectionView
+        
+        return dragItems(at: indexPath)
+    }
+    
+    
+    
 }
