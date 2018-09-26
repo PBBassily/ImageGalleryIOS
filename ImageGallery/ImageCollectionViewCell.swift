@@ -8,15 +8,28 @@
 
 import UIKit
 
+protocol ImageCollectionViewCellDelegate : class {
+    func didLoadImage()
+}
+
 class ImageCollectionViewCell: UICollectionViewCell {
 
+    weak var delegate : ImageCollectionViewCellDelegate?
     
-    @IBOutlet weak var imageView: UIImageView!
+    
+    
+    
+    @IBOutlet weak var imageView: UIImageView! {
+        didSet {
+            setNeedsDisplay()
+            setNeedsLayout()
+        }
+    }
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     func fetch(contentOf imageURL : URL) {
         
-        
+            imageView.image = nil
             spinner.startAnimating()
             DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                 let urlContents = try? Data(contentsOf: imageURL)
@@ -24,13 +37,16 @@ class ImageCollectionViewCell: UICollectionViewCell {
                     self?.spinner.stopAnimating()
                     
                     if let imageData  = urlContents{
-                        print("i got imageURL")
+                        print("i got \(imageURL)")
                         self?.imageView.image = UIImage(data: imageData)
+                        self?.delegate?.didLoadImage()
                 }
-                
             }
         }
         
+        
+        
     }
+    
     
 }

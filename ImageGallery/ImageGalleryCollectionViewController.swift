@@ -8,19 +8,33 @@
 
 import UIKit
 
-class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate {
+class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout {
     
-   
+    
+    
+    
     
     var images = [GalleryImage]()
     
     override func viewDidLoad() {
         collectionView?.dataSource = self
         collectionView?.delegate = self
-       // collectionView?.dragDelegate = self
+        // collectionView?.dragDelegate = self
         collectionView?.dropDelegate = self
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(scaler(_:)))
+        view.addGestureRecognizer(pinch)
+        
+        
     }
+  @objc  func scaler(_ gestureRecognizer : UIPinchGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
+            Constants.FIXED_CELL_WIDTH = Constants.FIXED_CELL_WIDTH*gestureRecognizer.scale
+            gestureRecognizer.scale = 1.0
+        }
     
+    flowLayout?.invalidateLayout()
+    }
     func collectionView(_ collectionView: UICollectionView, canHandle session: UIDropSession) -> Bool {
         return session.canLoadObjects(ofClass: NSURL.self) && session.canLoadObjects(ofClass: UIImage.self)
     }
@@ -33,7 +47,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
         
-        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: 0, section: 0 )
+        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: images.count, section: 0 )
         
         for item in coordinator.items {
             
@@ -42,7 +56,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
                 print("local drop")
                 if let attributedString = (item.dragItem.localObject as? NSAttributedString) {
                     collectionView.performBatchUpdates({
-
+                        
                     })
                     coordinator.drop(item.dragItem, toItemAt: destinationPath)
                     
@@ -57,13 +71,14 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
                     DispatchQueue.main.async {
                         
                         if let url = provider as? URL {
-                            print("i can")
+                            print("cv can drop image")
+                            //self.flowLayout?.invalidateLayout()
                             placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
                                 self.images.insert(GalleryImage(url: url.imageURL), at: insertionPath.item )
                             })
                         }
                         else  {
-                            print("i cannt")
+                            print("cv cant drop image")
                             placeholderContext.deletePlaceholder()
                         }
                     }
@@ -77,69 +92,69 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
         
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using [segue destinationViewController].
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
     // MARK: UICollectionViewDataSource
-
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
-
+    
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return images.count
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
         
         if let imageCell = cell as? ImageCollectionViewCell {
+            imageCell.delegate = self
             imageCell.fetch(contentOf: images[indexPath.row].url)
         }
-    
+        
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    var flowLayout: UICollectionViewFlowLayout? {
+        return collectionView?.collectionViewLayout as? UICollectionViewFlowLayout
     }
-    */
+    
+    func didLoadImage() {
+    
+        
+        flowLayout?.invalidateLayout()
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        print("update cell layout")
+        let cell = collectionView.cellForItem(at: indexPath)
+        
+        
+        let imageCell = cell as? ImageCollectionViewCell
+        
+        if let image = imageCell?.imageView.image {
+            
+            let aspectRatio = image.size.width / image.size.height
+            let newHeight = CGFloat(Constants.FIXED_CELL_WIDTH) / aspectRatio
+        
+            return CGSize(width: Constants.FIXED_CELL_WIDTH, height: newHeight)
+    } else {
+    return CGSize(width: Constants.FIXED_CELL_WIDTH , height: Constants.FIXED_CELL_HEIGHT)
+    }
+    
+}
 
 }

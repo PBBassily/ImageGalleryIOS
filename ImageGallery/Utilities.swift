@@ -8,6 +8,11 @@
 
 import Foundation
 import UIKit
+struct Constants {
+    static var FIXED_CELL_WIDTH = CGFloat(100)
+    static var FIXED_CELL_HEIGHT = CGFloat(50)
+}
+
 extension URL {
     var imageURL: URL {
         if let url = UIImage.urlToStoreLocallyAsJPEG(named: self.path) {
