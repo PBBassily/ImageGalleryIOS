@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Split View Controller-->
+        <!--Gallery Split View Controller-->
         <scene sceneID="BqQ-7e-14D">
             <objects>
-                <splitViewController id="sAO-d9-tCr" sceneMemberID="viewController">
+                <splitViewController id="sAO-d9-tCr" customClass="GallerySplitViewController" customModule="ImageGallery" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="lTb-Hv-NEk" kind="relationship" relationship="masterViewController" id="iD9-Ra-Nxx"/>
                         <segue destination="uza-rG-NYY" kind="relationship" relationship="detailViewController" id="Q8g-Uh-uYr"/>
@@ -22,10 +22,10 @@
             </objects>
             <point key="canvasLocation" x="-1916" y="189"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Image Gallery Table View Controller-->
         <scene sceneID="joq-tq-czC">
             <objects>
-                <tableViewController id="lTb-Hv-NEk" sceneMemberID="viewController">
+                <tableViewController id="lTb-Hv-NEk" customClass="ImageGalleryTableViewController" customModule="ImageGallery" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="XXA-WU-GwV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
