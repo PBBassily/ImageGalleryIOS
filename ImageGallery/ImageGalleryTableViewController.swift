@@ -54,6 +54,30 @@ class ImageGalleryTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    @available(iOS 11.0, *)
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
+    {
+        guard indexPath.section == 1 else {return nil}
+        let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Restore") { _,_,_ in
+            tableView.performBatchUpdates({
+                let gallery = self.recentlyDeletedGalleries.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                self.galleries.append(gallery)
+                tableView.insertRows(at: [IndexPath(row: self.galleries.count-1, section: 0)], with: .fade)
+                
+                tableView.reloadData()
+                
+                
+            })
+        }
+        deleteAction.backgroundColor = .green
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        return configuration
+    }
+
+    
     
     // MARK: - Table view data source
     
