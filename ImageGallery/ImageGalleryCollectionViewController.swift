@@ -8,18 +8,29 @@
 
 import UIKit
 
-class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, UICollectionViewDragDelegate,ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout {
+class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, UICollectionViewDragDelegate,ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout{
     
     
+    var gallery = Gallery(name: "") {
+        didSet {
+            collectionView?.reloadData()
+        }
+    }
+    
+    var images : [GalleryImage] {
+        get {
+            return gallery.images
+        }
+        
+        set {
+            gallery.images = newValue
+        }
+    }
     
     
-    
-    
-    
-    
-    var images = [GalleryImage]()
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         collectionView?.dataSource = self
         collectionView?.delegate = self
         collectionView?.dragDelegate = self
@@ -125,8 +136,13 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return images.count
+        
+        if (self.images.count == 0) {
+            self.collectionView?.setEmptyMessage("Your gallery is Empty!")
+        } else {
+            self.collectionView?.restore()
+        }
+        return self.images.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

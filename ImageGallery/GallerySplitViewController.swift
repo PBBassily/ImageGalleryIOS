@@ -8,7 +8,8 @@
 
 import UIKit
 
-class GallerySplitViewController: UISplitViewController {
+class GallerySplitViewController: UISplitViewController{
+    
 
 
     override func viewWillLayoutSubviews() {

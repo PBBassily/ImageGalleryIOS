@@ -11,7 +11,7 @@ import Foundation
 
 class Gallery {
     var name : String
-    var images : [GalleryImage]?
+    var images = [GalleryImage]()
     
     init(name: String, images: [GalleryImage]) {
         self.name = name

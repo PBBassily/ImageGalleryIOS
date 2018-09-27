@@ -47,6 +47,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="uza-rG-NYY" kind="showDetail" identifier="GallerySelection" id="1J6-uk-FpH"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -165,4 +168,7 @@
             <point key="canvasLocation" x="-514.0625" y="-54.4921875"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="1J6-uk-FpH"/>
+    </inferredMetricsTieBreakers>
 </document>

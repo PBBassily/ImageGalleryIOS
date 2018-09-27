@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import Foundation
+
+
+protocol ImageGalleryTableViewControllerDelegate : class {
+    func galleryIsSelected(gallery: Gallery)
+}
 
 class ImageGalleryTableViewController: UITableViewController {
     
     
     // Mark: - Initialization
-    
+    var delegate : ImageGalleryTableViewControllerDelegate?
     var galleries = [Gallery]()
     var recentlyDeletedGalleries = [Gallery]()
     var galleriesNames : [String] {
@@ -76,6 +82,13 @@ class ImageGalleryTableViewController: UITableViewController {
         configuration.performsFirstActionWithFullSwipe = true
         return configuration
     }
+    
+    var selectedGallery : Gallery?
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == 0 else {return }
+        //delegate?.galleryIsSelected()
+        selectedGallery =  galleries[indexPath.row]
+    }
 
     
     
@@ -106,6 +119,7 @@ class ImageGalleryTableViewController: UITableViewController {
         default:
             break
         }
+        
         return cell
     }
     
@@ -164,14 +178,16 @@ class ImageGalleryTableViewController: UITableViewController {
      }
      */
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "GallerySelection", let destinationViewController = segue.destination as? ImageGalleryCollectionViewController , let row = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: row){
+            destinationViewController.gallery = galleries[indexPath.row]
+        }
+    }
+    
     
 }
