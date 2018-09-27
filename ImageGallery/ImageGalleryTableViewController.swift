@@ -39,9 +39,9 @@ class ImageGalleryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0 : return "Your Galleries"
-        case 1 : return "Recently Deleted"
-        default : return ""
+        case 0 : return galleries.count > 0 ? "Your Galleries" : nil // to del if no model
+        case 1 : return recentlyDeletedGalleries.count > 0 ? "Recently Deleted" : nil
+        default : return nil
         }
     }
     
@@ -107,10 +107,18 @@ class ImageGalleryTableViewController: UITableViewController {
                     tableView.deleteRows(at: [indexPath], with: .fade)
                     recentlyDeletedGalleries.append(gallery)
                     tableView.insertRows(at: [IndexPath(row: recentlyDeletedGalleries.count-1, section: 1)], with: .fade)
-                    //let table = tablefor
+                   
                 })
+            } else if indexPath.section == 1 {
+                tableView.performBatchUpdates({
+                    recentlyDeletedGalleries.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    
+                })
+                
             }
-           // tableView.deleteRows(at: [indexPath], with: .fade)
+            
+           
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
