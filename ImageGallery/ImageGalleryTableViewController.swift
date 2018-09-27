@@ -11,21 +11,23 @@ import UIKit
 class ImageGalleryTableViewController: UITableViewController {
     
     
+    // Mark: - Initialization
+    
     var galleries = [Gallery]()
     var recentlyDeletedGalleries = [Gallery]()
+    var galleriesNames : [String] {
+        get{
+            return self.galleries.map{$0.name} + self.recentlyDeletedGalleries.map{$0.name}
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Galleries"
         
         
-        galleries.append(Gallery(name: "gallery1"))
-        galleries.append(Gallery(name: "gallery2"))
-        galleries.append(Gallery(name: "gallery3"))
-        
-        recentlyDeletedGalleries.append(Gallery(name: "gallery11"))
-        recentlyDeletedGalleries.append(Gallery(name: "gallery21"))
-        recentlyDeletedGalleries.append(Gallery(name: "gallery32"))
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -35,13 +37,21 @@ class ImageGalleryTableViewController: UITableViewController {
     }
     
     
-    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0 : return "Your Galleries"
         case 1 : return "Recently Deleted"
         default : return ""
         }
+    }
+    
+    // Mark: - Actions
+    
+    @IBAction func CreateNewGallery(_ sender: UIBarButtonItem) {
+        
+        galleries.append(Gallery(name: "New Gallery".madeUnique(withRespectTo: galleriesNames)))
+        
+        tableView.reloadData()
     }
     
     
@@ -87,17 +97,25 @@ class ImageGalleryTableViewController: UITableViewController {
      }
      */
     
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            if indexPath.section == 0 {
+                tableView.performBatchUpdates({
+                    let gallery = galleries.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    recentlyDeletedGalleries.append(gallery)
+                    tableView.insertRows(at: [IndexPath(row: recentlyDeletedGalleries.count-1, section: 1)], with: .fade)
+                    //let table = tablefor
+                })
+            }
+           // tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
     
     /*
      // Override to support rearranging the table view.

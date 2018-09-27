@@ -12,7 +12,17 @@ struct Constants {
     static var FIXED_CELL_WIDTH = CGFloat(100)
     static var FIXED_CELL_HEIGHT = CGFloat(50)
 }
-
+extension String {
+    func madeUnique(withRespectTo otherStrings: [String]) -> String {
+        var possiblyUnique = self
+        var uniqueNumber = 1
+        while otherStrings.contains(possiblyUnique) {
+            possiblyUnique = self + " \(uniqueNumber)"
+            uniqueNumber += 1
+        }
+        return possiblyUnique
+    }
+}
 extension URL {
     var imageURL: URL {
         if let url = UIImage.urlToStoreLocallyAsJPEG(named: self.path) {

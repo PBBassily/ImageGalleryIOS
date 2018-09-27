@@ -14,7 +14,7 @@
             <objects>
                 <splitViewController id="sAO-d9-tCr" customClass="GallerySplitViewController" customModule="ImageGallery" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="lTb-Hv-NEk" kind="relationship" relationship="masterViewController" id="iD9-Ra-Nxx"/>
+                        <segue destination="066-V6-g4Q" kind="relationship" relationship="masterViewController" id="iD9-Ra-Nxx"/>
                         <segue destination="uza-rG-NYY" kind="relationship" relationship="detailViewController" id="Q8g-Uh-uYr"/>
                     </connections>
                 </splitViewController>
@@ -54,10 +54,19 @@
                             <outlet property="delegate" destination="lTb-Hv-NEk" id="BuH-RF-RHp"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Pmt-Qf-vbW">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="kUE-m9-ljl">
+                            <connections>
+                                <action selector="CreateNewGallery:" destination="lTb-Hv-NEk" id="LKX-Yn-SVv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ue3-Vb-pZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-514" y="-54"/>
+            <point key="canvasLocation" x="251.5625" y="-54.4921875"/>
         </scene>
         <!--Image Gallery Collection View Controller-->
         <scene sceneID="p2S-Om-8in">
@@ -136,6 +145,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U9N-YQ-if3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-514" y="661"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0bO-kA-lnX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="066-V6-g4Q" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EWt-I9-16r">
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="lTb-Hv-NEk" kind="relationship" relationship="rootViewController" id="qsL-wX-ufZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zuM-Ef-Bb5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-514.0625" y="-54.4921875"/>
         </scene>
     </scenes>
 </document>
