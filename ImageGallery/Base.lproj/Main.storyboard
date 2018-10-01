@@ -31,23 +31,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GalleryItem" textLabel="Ede-Bl-akC" style="IBUITableViewCellStyleDefault" id="mmn-nt-ehA">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GalleryItem" id="mmn-nt-ehA" customClass="ImageGalleryTableViewCell" customModule="ImageGallery" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mmn-nt-ehA" id="UVb-zV-JRX">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ede-Bl-akC">
-                                            <rect key="frame" x="16" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="textfield" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dyT-qm-ecR">
+                                            <rect key="frame" x="10" y="10" width="74" height="23.5"/>
+                                            <accessibility key="accessibilityConfiguration">
+                                                <bool key="isElement" value="NO"/>
+                                            </accessibility>
                                             <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="dyT-qm-ecR" firstAttribute="top" secondItem="UVb-zV-JRX" secondAttribute="top" constant="10" id="IVn-nf-fGr"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dyT-qm-ecR" secondAttribute="trailing" constant="10" id="OTA-NF-Ybm"/>
+                                        <constraint firstAttribute="bottom" secondItem="dyT-qm-ecR" secondAttribute="bottom" constant="10" id="g4v-zM-OT3"/>
+                                        <constraint firstItem="dyT-qm-ecR" firstAttribute="leading" secondItem="UVb-zV-JRX" secondAttribute="leading" constant="10" id="gGH-UW-4OH"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="titleTextField" destination="dyT-qm-ecR" id="whF-41-UPt"/>
                                     <segue destination="uza-rG-NYY" kind="showDetail" identifier="GallerySelection" id="1J6-uk-FpH"/>
                                 </connections>
                             </tableViewCell>

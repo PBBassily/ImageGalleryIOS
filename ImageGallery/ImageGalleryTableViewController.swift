@@ -10,15 +10,15 @@ import UIKit
 import Foundation
 
 
-protocol ImageGalleryTableViewControllerDelegate : class {
-    func galleryIsSelected(gallery: Gallery)
-}
 
-class ImageGalleryTableViewController: UITableViewController {
+class ImageGalleryTableViewController: UITableViewController, ImageGalleryTableViewCellDelegate {
+   
+    
+   
+    
     
     
     // Mark: - Initialization
-    var delegate : ImageGalleryTableViewControllerDelegate?
     var collectionVC: ImageGalleryCollectionViewController?
     var galleries = [Gallery]()
     var recentlyDeletedGalleries = [Gallery]()
@@ -112,15 +112,18 @@ class ImageGalleryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "GalleryItem", for: indexPath)
+        
+        if let galleryCell =  cell as? ImageGalleryTableViewCell {
+            galleryCell.delegate = self
         switch indexPath.section {
         case 0:
-            cell.textLabel?.text = galleries[indexPath.row].name
+            galleryCell.titleTextField.text  = galleries[indexPath.row].name
         case 1:
-            cell.textLabel?.text = recentlyDeletedGalleries[indexPath.row].name
+            galleryCell.titleTextField.text = recentlyDeletedGalleries[indexPath.row].name
         default:
             break
         }
-        
+        }
         return cell
     }
     
@@ -179,6 +182,18 @@ class ImageGalleryTableViewController: UITableViewController {
      }
      */
     
+    
+    //MARK: - Cell Delegation
+    
+    func galleryTitleDidChange(sender: UITableViewCell, newName: String) {
+        if let indexPath = tableView.indexPath(for: sender) {
+            switch indexPath.section {
+            case 0: galleries[indexPath.row].name = newName
+            case 1 : recentlyDeletedGalleries[indexPath.row].name = newName
+            default : break
+            }
+        }
+    }
     
      // MARK: - Navigation
      
