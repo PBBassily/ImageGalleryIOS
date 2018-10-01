@@ -13,6 +13,9 @@ struct Constants {
     static var FIXED_CELL_HEIGHT = CGFloat(50)
 }
 
+
+
+
 extension UICollectionView {
     
     func makeUIDisabled () {
