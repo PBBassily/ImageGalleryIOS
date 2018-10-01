@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3818009021624B8400516119 /* ImageScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3818008F21624B8400516119 /* ImageScrollViewController.swift */; };
 		38184739215B8DA500ECA400 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38184738215B8DA500ECA400 /* AppDelegate.swift */; };
 		3818473E215B8DA500ECA400 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3818473C215B8DA500ECA400 /* Main.storyboard */; };
 		38184740215B8DA700ECA400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3818473F215B8DA700ECA400 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3818008F21624B8400516119 /* ImageScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageScrollViewController.swift; sourceTree = "<group>"; };
 		38184735215B8DA500ECA400 /* ImageGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38184738215B8DA500ECA400 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3818473D215B8DA500ECA400 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 			children = (
 				3818474A215B8EC200ECA400 /* Supporting Files */,
 				3818473C215B8DA500ECA400 /* Main.storyboard */,
+				3818008F21624B8400516119 /* ImageScrollViewController.swift */,
 				38994BA9215CC649005EA135 /* ImageGalleryTableViewController.swift */,
 				38184744215B8DA700ECA400 /* Info.plist */,
 				38F0A6142162309400FD7D6B /* ImageGalleryTableViewCell.swift */,
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38994BAE215CCBC5005EA135 /* Gallery.swift in Sources */,
+				3818009021624B8400516119 /* ImageScrollViewController.swift in Sources */,
 				38184739215B8DA500ECA400 /* AppDelegate.swift in Sources */,
 				3818474C215B92DC00ECA400 /* ImageGalleryCollectionViewController.swift in Sources */,
 				38994BAA215CC649005EA135 /* ImageGalleryTableViewController.swift in Sources */,

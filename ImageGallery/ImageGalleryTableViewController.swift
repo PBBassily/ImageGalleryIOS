@@ -19,7 +19,7 @@ class ImageGalleryTableViewController: UITableViewController, ImageGalleryTableV
     
     
     // Mark: - Initialization
-    var collectionVC: ImageGalleryCollectionViewController?
+    
     var galleries = [Gallery]()
     var recentlyDeletedGalleries = [Gallery]()
     var galleriesNames : [String] {
@@ -199,13 +199,16 @@ class ImageGalleryTableViewController: UITableViewController, ImageGalleryTableV
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let navcon = segue.destination as? UINavigationController
+        
+        let collectionVC =  navcon?.viewControllers[0] as? ImageGalleryCollectionViewController
         
         
-           collectionVC =  segue.destination as? ImageGalleryCollectionViewController
         
         if segue.identifier == "GallerySelection", let row = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: row){
             if indexPath.section == 0 {
                 collectionVC?.gallery = galleries[indexPath.row]
+                
             } else {
                 if let splitVC = splitViewController as? GallerySplitViewController {
                     splitVC.showAlert(message: "Restore Gallery")
