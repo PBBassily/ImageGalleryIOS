@@ -10,20 +10,21 @@ import UIKit
 
 class ImageGalleryCollectionViewController: UICollectionViewController, UICollectionViewDropDelegate, UICollectionViewDragDelegate,ImageCollectionViewCellDelegate,UICollectionViewDelegateFlowLayout{
     
-    
-    var gallery = Gallery(name: "") {
+  
+    var gallery : Gallery? {
         didSet {
             collectionView?.reloadData()
+            collectionView?.makeUIEnabled()
         }
     }
     
-    var images : [GalleryImage] {
+    var images : [GalleryImage]? {
         get {
-            return gallery.images
+            return gallery?.images
         }
         
         set {
-            gallery.images = newValue
+            gallery?.images = newValue!
         }
     }
     
@@ -40,6 +41,9 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(scaler(_:)))
         view.addGestureRecognizer(pinch)
         
+        if (gallery == nil){
+            collectionView?.makeUIDisabled()
+        }
         
     }
     @objc  func scaler(_ gestureRecognizer : UIPinchGestureRecognizer) {
@@ -68,7 +72,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
         
-        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: images.count, section: 0 )
+        let destinationPath = coordinator.destinationIndexPath ?? IndexPath(item: (images?.count)!, section: 0 )
         
         for item in coordinator.items {
             
@@ -77,8 +81,8 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
                 print("local drop")
                 if let url = (item.dragItem.localObject as? URL) {
                     collectionView.performBatchUpdates({
-                        images.remove(at: sourcePath.item)
-                        images.insert(GalleryImage(url: url), at: destinationPath.item)
+                        images?.remove(at: sourcePath.item)
+                        images?.insert(GalleryImage(url: url), at: destinationPath.item)
                         collectionView.deleteItems(at: [sourcePath])
                         collectionView.insertItems(at: [destinationPath])
                     })
@@ -98,7 +102,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
                             print("cv can drop image")
                             //self.flowLayout?.invalidateLayout()
                             placeholderContext.commitInsertion(dataSourceUpdates: { insertionPath in
-                                self.images.insert(GalleryImage(url: url.imageURL), at: insertionPath.item )
+                                self.images?.insert(GalleryImage(url: url.imageURL), at: insertionPath.item )
                             })
                         }
                         else  {
@@ -137,12 +141,12 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if (self.images.count == 0) {
+        if (self.images?.count == 0) {
             self.collectionView?.setEmptyMessage("Your gallery is Empty!")
         } else {
             self.collectionView?.restore()
         }
-        return self.images.count
+        return self.images?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -150,7 +154,7 @@ class ImageGalleryCollectionViewController: UICollectionViewController, UICollec
         
         if let imageCell = cell as? ImageCollectionViewCell {
             imageCell.delegate = self
-            imageCell.fetch(contentOf: images[indexPath.row].url)
+            imageCell.fetch(contentOf: images![indexPath.row].url)
         }
         
         return cell

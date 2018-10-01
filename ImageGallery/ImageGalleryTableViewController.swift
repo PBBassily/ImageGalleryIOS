@@ -19,6 +19,7 @@ class ImageGalleryTableViewController: UITableViewController {
     
     // Mark: - Initialization
     var delegate : ImageGalleryTableViewControllerDelegate?
+    var collectionVC: ImageGalleryCollectionViewController?
     var galleries = [Gallery]()
     var recentlyDeletedGalleries = [Gallery]()
     var galleriesNames : [String] {
@@ -184,8 +185,10 @@ class ImageGalleryTableViewController: UITableViewController {
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "GallerySelection", let destinationViewController = segue.destination as? ImageGalleryCollectionViewController , let row = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: row){
-            destinationViewController.gallery = galleries[indexPath.row]
+           collectionVC =  segue.destination as? ImageGalleryCollectionViewController
+        
+        if segue.identifier == "GallerySelection", let row = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: row){
+            collectionVC?.gallery = galleries[indexPath.row]
         }
     }
     

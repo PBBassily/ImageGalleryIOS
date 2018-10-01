@@ -27,17 +27,18 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    func fetch(contentOf imageURL : URL) {
+    func fetch(contentOf imageURL : URL?) {
         
+        guard imageURL != nil else {return }
             imageView.image = nil
             spinner.startAnimating()
             DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                let urlContents = try? Data(contentsOf: imageURL)
+                let urlContents = try? Data(contentsOf: imageURL!)
                 DispatchQueue.main.async {
                     self?.spinner.stopAnimating()
                     
                     if let imageData  = urlContents{
-                        print("i got \(imageURL)")
+                        print("i got \(imageURL!)")
                         self?.imageUrl = imageURL
                         self?.imageView.image = UIImage(data: imageData)
                         self?.delegate?.didLoadImage()
