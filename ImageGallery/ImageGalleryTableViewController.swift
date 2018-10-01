@@ -185,10 +185,18 @@ class ImageGalleryTableViewController: UITableViewController {
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
+        
            collectionVC =  segue.destination as? ImageGalleryCollectionViewController
         
         if segue.identifier == "GallerySelection", let row = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: row){
-            collectionVC?.gallery = galleries[indexPath.row]
+            if indexPath.section == 0 {
+                collectionVC?.gallery = galleries[indexPath.row]
+            } else {
+                if let splitVC = splitViewController as? GallerySplitViewController {
+                    splitVC.showAlert(message: "Restore Gallery")
+                    
+                }
+            }
         }
     }
     

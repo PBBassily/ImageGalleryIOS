@@ -28,5 +28,12 @@ class GallerySplitViewController: UISplitViewController{
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    
+    func showAlert(message : String) {
+     
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
